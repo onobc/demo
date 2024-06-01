@@ -9,17 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.cloud.stream.binder.test.EnableTestBinder;
+import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 		properties = {
-				"server.port=8080",
 				"spring.main.web-application-type=servlet",
 				"management.info.env.enabled=true",
 				"management.endpoints.web.discovery.enabled=true",
@@ -33,7 +33,7 @@ class DemoApplicationTests {
 	protected TestRestTemplate restTemplate;
 
 	@SpringBootApplication
-	@EnableTestBinder
+	@Import(TestChannelBinderConfiguration.class)
 	public static class AutoConfigurationApplication {
 		@Bean
 		Consumer<String> upper() {
